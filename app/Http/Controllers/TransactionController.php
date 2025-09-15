@@ -17,7 +17,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $Transactions = Transaction::all();
+        $Transactions = Transaction::with(['warehouse', 'product', 'customer', 'supplier'])->get();
         if ($Transactions->isEmpty()) {
             return ApiResponse::sendResponse(200, 'No transactions found', []);
         }
