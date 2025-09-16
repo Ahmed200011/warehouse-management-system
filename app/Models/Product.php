@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-   
+
 
     protected $fillable = [
         'name',
@@ -22,12 +22,14 @@ class Product extends Model
     }
     public function warehouse()
     {
-        return $this->belongsToMany(Warehouse::class);
+        return $this->belongsToMany(Warehouse::class, 'product_warehouses')->withPivot('quantity', );
     }
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
-
-
+    public function productWarehouses()
+    {
+        return $this->hasMany(ProductWarehouse::class);
+    }
 }

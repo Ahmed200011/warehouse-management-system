@@ -19,6 +19,9 @@ class WarehouseResource extends JsonResource
             'name' => $this->name,
             'address' => $this->address,
             'manager' => $this->manager,
+            'total_many' => $this->product->sum('price') * $this->productWarehouses->sum('quantity'),
+            'warehouse_quantity' => $this->productWarehouses->sum('quantity'),
+            'products' => ProductResource::collection($this->product)
         ];
     }
 }

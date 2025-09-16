@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Http\Resources\ProductWarehouseResource;
 use App\Models\ProductWarehouse;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
 class ProductWarehouseController extends Controller
@@ -12,7 +15,10 @@ class ProductWarehouseController extends Controller
      */
     public function index()
     {
-        //
+        $productWarehouses = ProductWarehouse::with(['product', 'warehouse'])->get();
+        // $warehouse=Warehouse::with('product')->get();
+
+        return ApiResponse::sendResponse(200, 'Product Warehouses retrieved successfully', ProductWarehouseResource::collection($productWarehouses) );
     }
 
     /**
@@ -36,7 +42,8 @@ class ProductWarehouseController extends Controller
      */
     public function show(ProductWarehouse $productWarehouse)
     {
-        //
+        
+
     }
 
     /**

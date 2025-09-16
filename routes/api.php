@@ -3,9 +3,11 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductWarehouseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WarehouseController;
+use App\Models\ProductWarehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +21,11 @@ Route::prefix('dashboard')->group(function () {
     Route::apiResource('customer', CustomerController::class);
     Route::apiResource('suppliers', SupplierController::class);
     Route::apiResource('warehouse', WarehouseController::class);
+    Route::apiResource('p-warehouse', ProductWarehouseController::class);
 
     // Route::apiResource('transaction', TransactionController::class);
     Route::controller(TransactionController::class)->group(function () {
         Route::get('transactions', 'index');
         Route::post('transactions', 'store');
-        // Route::get('transactions-by-customer/{customer}', 'getTransactionsByCustomer');
-        // Route::get('transactions-by-supplier/{supplier}', 'getTransactionsBySupplier');
     });
 });

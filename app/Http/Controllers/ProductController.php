@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('productWarehouses')->get();
         return ApiResponse::sendResponse(200, 'Products retrieved successfully', ProductResource::collection($products));
     }
 

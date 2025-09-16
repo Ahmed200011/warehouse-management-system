@@ -10,6 +10,16 @@ class ProductWarehouse extends Model
         'warehouse_id',
         'product_id',
         'quantity',
+        'total_price',
     ];
-    
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
 }

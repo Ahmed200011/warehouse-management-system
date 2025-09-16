@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionsResource;
+use App\Models\Product;
 use App\Models\ProductWarehouse;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -42,6 +43,10 @@ class TransactionController extends Controller
                     'product_id' => $data['product_id'],
                 ]);
                 $productWarehouse->increment('quantity', $data['quantity']);
+                $product = Product::find($data['product_id']); // جلب السعر من المنتج
+                $productWarehouse->total_price += $data['quantity'] * ($product->price ?? 0);
+                $productWarehouse->save();
+
                 // في حالة سحب كمية (out)
             } elseif ($data['transaction_type'] === 'out') {
                 $productWarehouse = ProductWarehouse::where('warehouse_id', $data['warehouse_id'])

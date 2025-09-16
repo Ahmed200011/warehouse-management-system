@@ -15,7 +15,7 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::all();
+        $warehouses = Warehouse::with('product','productWarehouses')->get();
         return ApiResponse::sendResponse(200, 'Warehouses retrieved successfully', WarehouseResource::collection($warehouses));
     }
 
@@ -38,7 +38,7 @@ class WarehouseController extends Controller
      */
     public function show(Warehouse $warehouse)
     {
-        //
+        return ApiResponse::sendResponse(200, 'Warehouse retrieved successfully', new WarehouseResource($warehouse));
     }
 
     /**
