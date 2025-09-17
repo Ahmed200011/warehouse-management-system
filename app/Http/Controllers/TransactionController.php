@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionsResource;
+use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\ProductWarehouse;
 use App\Models\Transaction;
@@ -52,15 +53,26 @@ class TransactionController extends Controller
                 $productWarehouse = ProductWarehouse::where('warehouse_id', $data['warehouse_id'])
                     ->where('product_id', $data['product_id'])
                     ->first();
-
-
                 if (!$productWarehouse || $productWarehouse->quantity < $data['quantity']) {
 
                     return ApiResponse::sendResponse(400, 'Insufficient stock for this transaction', []);
                 }
-
-
                 $productWarehouse->decrement('quantity', $data['quantity']);
+                $product_price = $productWarehouse->product->price ?? 0;
+                $invoice = Invoice::create([
+
+                    'type' => 'sales',
+                    'customer_id' => $data['customer_id'],
+                    'date' => now(),
+                    'total_amount' => $data['quantity'] * $product_price,
+                ]);
+                $invoice->items()->create([
+                    'product_id' => $data['product_id'],
+                    'quantity' => $data['quantity'],
+                    'unit_price' => $product_price,
+                    'total_price' => $data['quantity'] * $product_price,
+                    'warehouse_id' => $data['warehouse_id'],
+                ]);
             } else {
                 return ApiResponse::sendResponse(400, 'Invalid transaction type', []);
             }

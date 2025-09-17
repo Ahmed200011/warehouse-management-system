@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductWarehouseController;
 use App\Http\Controllers\SupplierController;
@@ -22,6 +23,8 @@ Route::prefix('dashboard')->group(function () {
     Route::apiResource('suppliers', SupplierController::class);
     Route::apiResource('warehouse', WarehouseController::class);
     Route::apiResource('p-warehouse', ProductWarehouseController::class);
+    Route::apiResource('invoice', InvoiceController::class);
+
 
     // Route::apiResource('transaction', TransactionController::class);
     Route::controller(TransactionController::class)->group(function () {
